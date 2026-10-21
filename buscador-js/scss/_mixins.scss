@@ -1,0 +1,52 @@
+/// Aplica un bloque de estilos cuando el ancho del viewport es igual
+/// o superior al valor indicado. Facilita un diseño mobile-first:
+/// primero se escriben los estilos para pantallas pequeñas y después
+/// se añaden los cambios para pantallas más anchas.
+///
+/// @param {Number} $min-width - Ancho mínimo con unidad, por ejemplo:
+///   48rem o 768px.
+///
+/// @content Estilos que se insertarán dentro de la media query.
+///
+/// Ejemplo de uso:
+///   @use 'mixins';
+///
+///   .club-hero {
+///     display: grid;
+///     grid-template-columns: 1fr;
+///
+///     @include mixins.from(48rem) {
+///       grid-template-columns: 1.4fr 1fr;
+///     }
+///   }
+///
+/// CSS generado:
+///   .club-hero {
+///     display: grid;
+///     grid-template-columns: 1fr;
+///   }
+///
+///   @media (min-width: 48rem) {
+///     .club-hero {
+///       grid-template-columns: 1.4fr 1fr;
+///     }
+///   }
+///
+/// En este ejemplo, la cuadrícula tiene una columna por defecto
+/// y pasa a dos columnas al alcanzar el ancho mínimo.
+///
+/// @content representa el bloque escrito dentro de @include.
+/// El mixin conserva el selector desde el que se invoca.
+///
+/// Importante:
+///   - El límite es inclusivo: también se aplica en el ancho exacto.
+///   - Usar from(48rem) o from(768px), no from(768).
+///   - El mixin no convierte unidades.
+///   - En media queries, rem se basa en el tamaño de fuente inicial
+///     del navegador, no en un font-size declarado en el elemento html.
+///     Con un tamaño inicial de 16px, 48rem equivale a 768px.
+@mixin from($min-width) {
+  @media (min-width: $min-width) {
+    @content;
+  }
+}

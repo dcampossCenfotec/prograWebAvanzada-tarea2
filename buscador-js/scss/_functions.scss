@@ -1,0 +1,33 @@
+@use 'sass:math';
+
+/// Convierte un valor numérico de diseño, expresado en píxeles sin unidad,
+/// a una longitud en rem, usando 16 como base de conversión.
+///
+/// @param {Number} $pixels - Número sin unidad, por ejemplo: 16, 24 o 40.
+/// @return {Number} Longitud con unidad rem.
+///
+/// Cálculo:
+///   rem(24) → (24 / 16) * 1rem → 1.5rem
+///
+/// Ejemplos en SCSS:
+///   padding: rem(16);        → padding: 1rem;
+///   gap: rem(24);            → gap: 1.5rem;
+///   margin-block: rem(40);   → margin-block: 2.5rem;
+///   border-radius: rem(8);   → border-radius: 0.5rem;
+///
+/// Si se importa con @use 'functions' as fn:
+///   padding: fn.rem(24);     → padding: 1.5rem;
+///
+/// La equivalencia visual depende del tamaño de fuente del elemento raíz:
+///   Con una raíz de 16px, 1.5rem equivale a 24px.
+///   Con una raíz de 20px, 1.5rem equivale a 30px.
+///
+/// La función no consulta el tamaño de fuente del navegador:
+/// únicamente calcula el valor rem durante la compilación de Sass.
+///
+/// Importante: usar rem(24), no rem(24px).
+/// Pasar 24px produciría unidades compuestas px * rem, inválidas para
+/// propiedades CSS de longitud como padding o margin.
+@function rem($pixels) {
+  @return math.div($pixels, 16) * 1rem;
+}

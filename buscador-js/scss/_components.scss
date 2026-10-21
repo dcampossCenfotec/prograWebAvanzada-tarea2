@@ -1,0 +1,102 @@
+@use 'variables' as theme;
+@use 'functions' as fn;
+@use 'mixins';
+
+:root {
+  --club-accent: #{theme.$primary};
+  --club-surface: #fff;
+  --club-border: #dce4dd;
+  --club-radius: #{theme.$border-radius-lg};
+  --club-gap: #{fn.rem(24)};
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: fn.rem(12);
+  left: fn.rem(12);
+  z-index: 1100;
+  padding: fn.rem(12) fn.rem(20);
+  color: var(--club-surface);
+  background-color: var(--club-accent);
+  border-radius: var(--club-radius);
+}
+
+.brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: fn.rem(40);
+  height: fn.rem(40);
+  border: 1px solid currentcolor;
+  border-radius: theme.$border-radius;
+  font-size: fn.rem(16);
+  letter-spacing: 0.05em;
+}
+
+.club-hero {
+  display: grid;
+  gap: var(--club-gap);
+  align-items: center;
+  padding-block: fn.rem(40);
+
+  > * {
+    min-width: 0;
+  }
+
+  &__title {
+    max-width: 16ch;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    line-height: 1.1;
+  }
+
+  &__aside {
+    padding: clamp(1.25rem, 4vw, 2rem);
+    background-color: var(--club-surface);
+    border: 1px solid var(--club-border);
+    border-radius: var(--club-radius);
+  }
+
+  @include mixins.from(48rem) {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    padding-block: fn.rem(64);
+  }
+}
+
+.reading-steps {
+  display: grid;
+  gap: fn.rem(16);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  &__item {
+    display: flex;
+    gap: fn.rem(12);
+    align-items: flex-start;
+  }
+
+  &__number {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: fn.rem(32);
+    height: fn.rem(32);
+    color: var(--club-accent);
+    border: 1px solid var(--club-border);
+    border-radius: 50%;
+    font-weight: 700;
+  }
+}
+
+.page-section {
+  scroll-margin-top: fn.rem(24);
+}
+
+.search-loading:not([hidden]) {
+  display: flex;
+  gap: fn.rem(12);
+  align-items: center;
+}
+
+.reading-table {
+  min-width: fn.rem(640);
+}
