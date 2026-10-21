@@ -96,7 +96,18 @@ function createBookCard(book) {
   detailsButton.dataset.bsTarget = '#book-detail-modal';
   detailsButton.setAttribute('aria-label', `Ver detalles de “${book.title}”`);
 
-  actions.append(detailsButton);
+  const addButton = document.createElement('button');
+  addButton.type = 'button';
+  addButton.className = 'btn btn-primary';
+  addButton.textContent = 'Agregar a lecturas';
+  addButton.dataset.action = 'add-reading';
+  addButton.dataset.bookId = book.id;
+  addButton.setAttribute(
+    'aria-label',
+    `Agregar “${book.title}” a tu lista de lecturas`,
+  );
+
+  actions.append(detailsButton, addButton);
   body.append(title, authors, year, actions);
   card.append(cover, body);
   column.append(card);
@@ -212,4 +223,8 @@ export function renderSearchResults(books) {
 
   const label = books.length === 1 ? 'libro' : 'libros';
   searchResultsCount.textContent = `Mostrando ${books.length} ${label}.`;
+}
+
+export function getSearchBook(bookId) {
+  return searchBooksById.get(bookId) ?? null;
 }
