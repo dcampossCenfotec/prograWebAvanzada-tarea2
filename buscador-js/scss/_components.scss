@@ -100,3 +100,27 @@
 .reading-table {
   min-width: fn.rem(640);
 }
+
+.book-card {
+  overflow: hidden;
+
+  &__cover {
+    width: 100%;
+    height: fn.rem(240);
+    padding: fn.rem(16);
+    object-fit: contain;
+    background-color: var(--club-surface);
+    border-bottom: 1px solid var(--club-border);
+  }
+
+  &__title {
+    overflow-wrap: anywhere;
+  }
+}
+
+.book-detail-cover {
+  display: block;
+  width: 100%;
+  max-height: fn.rem(320);
+  object-fit: contain;
+}
