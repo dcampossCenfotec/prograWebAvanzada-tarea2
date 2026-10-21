@@ -1,0 +1,21 @@
+# Dependencias
+node_modules/
+
+# Archivos generados
+dist/
+coverage/
+.sass-cache/
+/buscador-js/css/
+
+# Configuración local y secretos
+.env
+.env.*
+!.env.example
+*.local
+
+# Registros
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
