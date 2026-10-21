@@ -1,0 +1,29 @@
+{
+  "name": "estanteria-comun-buscador",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Buscador de libros de Estantería Común.",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "http-server . -a 127.0.0.1 -p 4173 -c-1",
+    "build:css": "sass --load-path=node_modules --quiet-deps scss/main.scss css/main.css",
+    "watch:css": "sass --watch --load-path=node_modules --quiet-deps scss/main.scss:css/main.css",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "bootstrap": "5.3.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.13.0",
+    "globals": "17.13.0",
+    "http-server": "14.1.1",
+    "prettier": "3.9.10",
+    "sass": "1.106.0"
+  }
+}
