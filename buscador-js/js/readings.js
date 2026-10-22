@@ -6,13 +6,17 @@ import {
   removeReadingBook,
 } from './reading-state.js';
 import {
+  animateReadingRow,
   appendReadingRow,
   removeReadingRow,
   renderInitialReadingList,
+  setReadingRowBusy,
   showReadingFeedback,
   updateReadingRow,
   updateReadingSummary,
 } from './reading-render.js';
+
+const busyBooks = new Set();
 
 function findActionButton(event, container, selector) {
   if (!(event.target instanceof Element)) {
@@ -21,11 +25,31 @@ function findActionButton(event, container, selector) {
 
   const button = event.target.closest(selector);
 
-  if (!button || !container.contains(button) || button.disabled) {
+  if (
+    !button ||
+    !container.contains(button) ||
+    button.disabled ||
+    button.getAttribute('aria-disabled') === 'true'
+  ) {
     return null;
   }
 
   return button;
+}
+
+async function runReadingAction(bookId, action) {
+  if (busyBooks.has(bookId)) {
+    return;
+  }
+
+  busyBooks.add(bookId);
+
+  try {
+    await action();
+  } finally {
+    setReadingRowBusy(bookId, false);
+    busyBooks.delete(bookId);
+  }
 }
 
 export function initReadings() {
@@ -34,7 +58,7 @@ export function initReadings() {
 
   renderInitialReadingList(getReadingBooks());
 
-  searchResults.addEventListener('click', (event) => {
+  searchResults.addEventListener('click', async (event) => {
     const button = findActionButton(
       event,
       searchResults,
@@ -51,26 +75,31 @@ export function initReadings() {
       return;
     }
 
-    const addedBook = addReadingBook(book);
+    await runReadingAction(book.id, async () => {
+      const addedBook = addReadingBook(book);
 
-    if (!addedBook) {
+      if (!addedBook) {
+        showReadingFeedback(
+          `“${book.title}” ya está en tu lista de lecturas.`,
+          'warning',
+        );
+        return;
+      }
+
+      appendReadingRow(addedBook);
+      updateReadingSummary(getReadingBooks().length);
+      setReadingRowBusy(book.id, true);
+
+      await animateReadingRow(book.id, 'reading-row--entering');
+
       showReadingFeedback(
-        `“${book.title}” ya está en tu lista de lecturas.`,
-        'warning',
+        `Agregaste “${book.title}” con estado Pendiente.`,
+        'success',
       );
-      return;
-    }
-
-    appendReadingRow(addedBook);
-    updateReadingSummary(getReadingBooks().length);
-
-    showReadingFeedback(
-      `Agregaste “${book.title}” con estado Pendiente.`,
-      'success',
-    );
+    });
   });
 
-  readingList.addEventListener('click', (event) => {
+  readingList.addEventListener('click', async (event) => {
     const button = findActionButton(event, readingList, 'button[data-action]');
 
     if (!button) {
@@ -80,34 +109,46 @@ export function initReadings() {
     const { action, bookId } = button.dataset;
 
     if (action === 'change-status') {
-      const updatedBook = changeReadingStatus(bookId);
+      await runReadingAction(bookId, async () => {
+        const updatedBook = changeReadingStatus(bookId);
 
-      if (!updatedBook) {
-        return;
-      }
+        if (!updatedBook) {
+          return;
+        }
 
-      updateReadingRow(updatedBook);
+        updateReadingRow(updatedBook);
+        setReadingRowBusy(bookId, true);
 
-      showReadingFeedback(
-        `“${updatedBook.title}” ahora está en estado ${updatedBook.status}.`,
-      );
+        await animateReadingRow(bookId, 'reading-row--updating');
+
+        showReadingFeedback(
+          `“${updatedBook.title}” ahora está en estado ${updatedBook.status}.`,
+        );
+      });
 
       return;
     }
 
     if (action === 'remove-reading') {
-      const removedBook = removeReadingBook(bookId);
+      await runReadingAction(bookId, async () => {
+        const book = getReadingBooks().find((reading) => reading.id === bookId);
 
-      if (!removedBook) {
-        return;
-      }
+        if (!book) {
+          return;
+        }
 
-      removeReadingRow(bookId);
-      updateReadingSummary(getReadingBooks().length);
+        setReadingRowBusy(bookId, true);
 
-      showReadingFeedback(
-        `Quitaste “${removedBook.title}” de tu lista de lecturas.`,
-      );
+        await animateReadingRow(bookId, 'reading-row--leaving');
+
+        removeReadingBook(bookId);
+        removeReadingRow(bookId);
+        updateReadingSummary(getReadingBooks().length);
+
+        showReadingFeedback(
+          `Quitaste “${book.title}” de tu lista de lecturas.`,
+        );
+      });
     }
   });
 }

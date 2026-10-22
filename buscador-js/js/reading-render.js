@@ -47,6 +47,7 @@ function createActionButton(book, action, className) {
 
 function createReadingRow(book) {
   const row = document.createElement('tr');
+  row.className = 'reading-row';
   row.dataset.bookId = book.id;
 
   const titleCell = document.createElement('td');
@@ -157,4 +158,74 @@ export function showReadingFeedback(message, variant = 'info') {
   readingFeedback.className = `alert alert-${variant}`;
   readingFeedback.textContent = message;
   readingFeedback.hidden = false;
+}
+
+export function setReadingRowBusy(bookId, isBusy) {
+  const row = findReadingRow(bookId);
+
+  if (!row) {
+    return;
+  }
+
+  row.setAttribute('aria-busy', String(isBusy));
+
+  row.querySelectorAll('button').forEach((button) => {
+    button.setAttribute('aria-disabled', String(isBusy));
+  });
+}
+
+export function animateReadingRow(bookId, className) {
+  const row = findReadingRow(bookId);
+
+  if (!row) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    let timeoutId = null;
+    let finished = false;
+
+    function finish() {
+      if (finished) {
+        return;
+      }
+
+      finished = true;
+
+      clearTimeout(timeoutId);
+
+      row.removeEventListener('animationend', handleAnimationFinish);
+      row.removeEventListener('animationcancel', handleAnimationFinish);
+
+      row.classList.remove(className);
+
+      resolve();
+    }
+
+    function handleAnimationFinish(event) {
+      // Ignora animaciones que terminen en elementos hijos.
+      if (event.target === row) {
+        finish();
+      }
+    }
+
+    row.addEventListener('animationend', handleAnimationFinish);
+    row.addEventListener('animationcancel', handleAnimationFinish);
+
+    row.classList.add(className);
+
+    // Estas clases definen una única animación por fila.
+    const styles = getComputedStyle(row);
+    const duration = parseFloat(styles.animationDuration) * 1000 || 0;
+    const delay = parseFloat(styles.animationDelay) * 1000 || 0;
+
+    // Incluye el caso de movimiento reducido o estilos no disponibles.
+    if (styles.animationName === 'none' || duration === 0) {
+      finish();
+      return;
+    }
+
+    // Respaldo por si el navegador no entrega el evento de finalización.
+    timeoutId = setTimeout(finish, Math.max(0, duration + delay) + 150);
+  });
 }

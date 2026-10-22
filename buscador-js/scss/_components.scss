@@ -124,3 +124,65 @@
   max-height: fn.rem(320);
   object-fit: contain;
 }
+
+.reading-row {
+  &[aria-busy='true'] button {
+    cursor: progress;
+    opacity: 0.65;
+  }
+
+  &--entering {
+    animation: reading-enter 220ms ease-out both;
+  }
+
+  &--updating {
+    animation: reading-update 240ms ease-in-out;
+  }
+
+  &--leaving {
+    animation: reading-leave 180ms ease-in both;
+  }
+}
+
+@keyframes reading-enter {
+  from {
+    opacity: 0;
+    transform: translateY(fn.rem(6));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reading-update {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes reading-leave {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(fn.rem(-6));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reading-row--entering,
+  .reading-row--updating,
+  .reading-row--leaving {
+    animation: none;
+  }
+}
