@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { INITIAL_BOOKS } from '../../data/books.js';
 import { INITIAL_MEMBERS } from '../../data/members.js';
-import { getNextReadingStatus } from '../../data/reading-statuses.js';
+import {
+  getNextReadingStatus,
+  READING_STATUS,
+} from '../../data/reading-statuses.js';
+import BookForm from '../forms/BookForm.jsx';
 import BookList from './BookList.jsx';
 
 export default function ReadingBoard() {
@@ -14,6 +18,18 @@ export default function ReadingBoard() {
 
   const bookCount = books.length;
   const bookLabel = bookCount === 1 ? 'libro registrado' : 'libros registrados';
+
+  function handleAddBook(draft) {
+    const newBook = {
+      id: `book-${crypto.randomUUID()}`,
+      title: draft.title,
+      authors: [...draft.authors],
+      proposedBy: draft.proposedBy,
+      status: READING_STATUS.PENDING,
+    };
+
+    setBooks((currentBooks) => [...currentBooks, newBook]);
+  }
 
   function handleStatusChange(bookId) {
     setBooks((currentBooks) =>
@@ -35,32 +51,36 @@ export default function ReadingBoard() {
   }
 
   return (
-    <section aria-labelledby="reading-board-title">
-      <h2 id="reading-board-title" className="h3">
-        Colección del club
-      </h2>
+    <>
+      <BookForm members={INITIAL_MEMBERS} onAddBook={handleAddBook} />
 
-      <p className="text-body-secondary">
-        Lecturas compartidas por los {INITIAL_MEMBERS.length} integrantes del
-        club. Actualiza su avance o quita los libros que ya no formarán parte de
-        la colección.
-      </p>
+      <section aria-labelledby="reading-board-title">
+        <h2 id="reading-board-title" className="h3">
+          Colección del club
+        </h2>
 
-      <p
-        className="fw-semibold"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      >
-        {bookCount} {bookLabel}.
-      </p>
+        <p className="text-body-secondary">
+          Lecturas compartidas por los {INITIAL_MEMBERS.length} integrantes del
+          club. Actualiza su avance o quita los libros que ya no formarán parte
+          de la colección.
+        </p>
 
-      <BookList
-        books={books}
-        members={INITIAL_MEMBERS}
-        onStatusChange={handleStatusChange}
-        onRemove={handleRemove}
-      />
-    </section>
+        <p
+          className="fw-semibold"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {bookCount} {bookLabel}.
+        </p>
+
+        <BookList
+          books={books}
+          members={INITIAL_MEMBERS}
+          onStatusChange={handleStatusChange}
+          onRemove={handleRemove}
+        />
+      </section>
+    </>
   );
 }
