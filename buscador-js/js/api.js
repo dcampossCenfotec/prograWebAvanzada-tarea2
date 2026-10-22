@@ -1,6 +1,7 @@
 const SEARCH_URL = 'https://openlibrary.org/search.json';
 const SEARCH_LIMIT = 12;
 const REQUEST_TIMEOUT = 20000;
+const PROPOSALS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 function normalizeBook(book) {
   return {
@@ -55,6 +56,38 @@ export async function searchBooks(query) {
           book.key.trim(),
       )
       .map(normalizeBook);
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+export async function submitProposal(proposal) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
+
+  try {
+    const response = await fetch(PROPOSALS_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify(proposal),
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `El servicio de propuestas respondió con HTTP ${response.status}.`,
+      );
+    }
+
+    const data = await response.json();
+
+    if (!data || !Number.isInteger(data.id)) {
+      throw new Error('El servicio devolvió una respuesta inesperada.');
+    }
+
+    return data;
   } finally {
     clearTimeout(timeoutId);
   }

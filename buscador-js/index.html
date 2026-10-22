@@ -275,212 +275,232 @@
         <div class="card shadow-sm">
           <div class="card-body p-3 p-md-4">
             <form id="proposal-form" novalidate>
-              <div class="row g-3">
-                <div class="col-12">
-                  <label for="proposal-title-input" class="form-label">
-                    Título del libro
-                  </label>
-                  <input
-                    id="proposal-title-input"
-                    name="title"
-                    class="form-control"
-                    type="text"
-                    minlength="1"
-                    maxlength="180"
-                    pattern=".*\S.*"
-                    aria-describedby="proposal-title-error"
-                    required
-                  />
-                  <div id="proposal-title-error" class="invalid-feedback"></div>
-                </div>
-
-                <fieldset class="col-12">
-                  <legend class="form-label fs-6">Autores</legend>
-
-                  <p id="authors-help" class="form-text mt-0">
-                    Incluye entre uno y cinco autores.
-                  </p>
-
-                  <div id="authors-container" class="d-grid gap-3">
-                    <div data-author-field>
-                      <label for="proposal-author-1" class="form-label">
-                        Autor 1
-                      </label>
-
-                      <div class="input-group has-validation">
-                        <input
-                          id="proposal-author-1"
-                          name="authors"
-                          class="form-control"
-                          type="text"
-                          minlength="1"
-                          maxlength="120"
-                          pattern=".*\S.*"
-                          aria-describedby="authors-help proposal-author-1-error"
-                          required
-                        />
-
-                        <button
-                          class="btn btn-outline-secondary"
-                          type="button"
-                          data-action="remove-author"
-                          aria-label="Quitar autor 1"
-                          disabled
-                        >
-                          Quitar
-                        </button>
-
-                        <div
-                          id="proposal-author-1-error"
-                          class="invalid-feedback"
-                        ></div>
-                      </div>
-                    </div>
+              <fieldset id="proposal-fields">
+                <legend class="visually-hidden">
+                  Datos de la propuesta de lectura
+                </legend>
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label for="proposal-title-input" class="form-label">
+                      Título del libro
+                    </label>
+                    <input
+                      id="proposal-title-input"
+                      name="title"
+                      class="form-control"
+                      type="text"
+                      minlength="1"
+                      maxlength="180"
+                      pattern=".*\S.*"
+                      aria-describedby="proposal-title-error"
+                      required
+                    />
+                    <div
+                      id="proposal-title-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
 
-                  <button
-                    id="add-author-button"
-                    class="btn btn-outline-primary btn-sm mt-3"
-                    type="button"
-                    disabled
-                  >
-                    Agregar autor
-                  </button>
-                </fieldset>
+                  <fieldset class="col-12">
+                    <legend class="form-label fs-6">Autores</legend>
 
-                <div class="col-12 col-md-6">
-                  <label for="proposal-year" class="form-label">
-                    Año de publicación
-                  </label>
-                  <input
-                    id="proposal-year"
-                    name="publicationYear"
-                    class="form-control"
-                    type="number"
-                    min="1"
-                    step="1"
-                    aria-describedby="proposal-year-help proposal-year-error"
-                    required
-                  />
-                  <p id="proposal-year-help" class="form-text mb-0">
-                    El año no puede ser posterior al actual.
-                  </p>
-                  <div id="proposal-year-error" class="invalid-feedback"></div>
-                </div>
+                    <p id="authors-help" class="form-text mt-0">
+                      Incluye entre uno y cinco autores.
+                    </p>
 
-                <div class="col-12 col-md-6">
-                  <label for="proposal-pages" class="form-label">
-                    Cantidad de páginas
-                  </label>
-                  <input
-                    id="proposal-pages"
-                    name="pageCount"
-                    class="form-control"
-                    type="number"
-                    min="1"
-                    step="1"
-                    aria-describedby="proposal-pages-error"
-                    required
-                  />
-                  <div id="proposal-pages-error" class="invalid-feedback"></div>
-                </div>
+                    <div id="authors-container" class="d-grid gap-3">
+                      <div data-author-field>
+                        <label for="proposal-author-1" class="form-label">
+                          Autor 1
+                        </label>
 
-                <div class="col-12 col-md-6">
-                  <label for="proposal-genre" class="form-label">
-                    Género
-                  </label>
-                  <select
-                    id="proposal-genre"
-                    name="genre"
-                    class="form-select"
-                    aria-describedby="proposal-genre-error"
-                    required
-                  >
-                    <option value="" selected disabled>
-                      Selecciona un género
-                    </option>
-                    <option value="novel">Novela</option>
-                    <option value="short-story">Cuento</option>
-                    <option value="poetry">Poesía</option>
-                    <option value="essay">Ensayo</option>
-                    <option value="theater">Teatro</option>
-                    <option value="other">Otro</option>
-                  </select>
-                  <div id="proposal-genre-error" class="invalid-feedback"></div>
-                </div>
+                        <div class="input-group has-validation">
+                          <input
+                            id="proposal-author-1"
+                            name="authors"
+                            class="form-control"
+                            type="text"
+                            minlength="1"
+                            maxlength="120"
+                            pattern=".*\S.*"
+                            aria-describedby="authors-help proposal-author-1-error"
+                            required
+                          />
 
-                <div class="col-12 col-md-6">
-                  <label for="proposal-email" class="form-label">
-                    Tu correo electrónico
-                  </label>
-                  <input
-                    id="proposal-email"
-                    name="email"
-                    class="form-control"
-                    type="email"
-                    maxlength="254"
-                    autocomplete="email"
-                    aria-describedby="proposal-email-error"
-                    required
-                  />
-                  <div id="proposal-email-error" class="invalid-feedback"></div>
-                </div>
+                          <button
+                            class="btn btn-outline-secondary"
+                            type="button"
+                            data-action="remove-author"
+                            aria-label="Quitar autor 1"
+                            disabled
+                          >
+                            Quitar
+                          </button>
 
-                <div class="col-12 col-md-6">
-                  <label for="proposal-session-date" class="form-label">
-                    Fecha propuesta para la sesión
-                  </label>
-                  <input
-                    id="proposal-session-date"
-                    name="sessionDate"
-                    class="form-control"
-                    type="date"
-                    aria-describedby="proposal-session-date-help proposal-session-date-error"
-                    required
-                  />
-                  <p id="proposal-session-date-help" class="form-text mb-0">
-                    Elige hoy o una fecha posterior.
-                  </p>
-                  <div
-                    id="proposal-session-date-error"
-                    class="invalid-feedback"
-                  ></div>
-                </div>
+                          <div
+                            id="proposal-author-1-error"
+                            class="invalid-feedback"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
 
-                <div class="col-12">
-                  <label for="proposal-reason" class="form-label">
-                    ¿Por qué propones este libro?
-                  </label>
-                  <textarea
-                    id="proposal-reason"
-                    name="reason"
-                    class="form-control"
-                    rows="4"
-                    minlength="10"
-                    maxlength="1000"
-                    aria-describedby="proposal-reason-help proposal-reason-error"
-                    required
-                  ></textarea>
-                  <p id="proposal-reason-help" class="form-text mb-0">
-                    Escribe entre 10 y 1000 caracteres.
-                  </p>
-                  <div
-                    id="proposal-reason-error"
-                    class="invalid-feedback"
-                  ></div>
-                </div>
+                    <button
+                      id="add-author-button"
+                      class="btn btn-outline-primary btn-sm mt-3"
+                      type="button"
+                      disabled
+                    >
+                      Agregar autor
+                    </button>
+                  </fieldset>
 
-                <div class="col-12">
-                  <button
-                    id="proposal-submit"
-                    class="btn btn-primary"
-                    type="submit"
-                    disabled
-                  >
-                    Validar propuesta
-                  </button>
+                  <div class="col-12 col-md-6">
+                    <label for="proposal-year" class="form-label">
+                      Año de publicación
+                    </label>
+                    <input
+                      id="proposal-year"
+                      name="publicationYear"
+                      class="form-control"
+                      type="number"
+                      min="1"
+                      step="1"
+                      aria-describedby="proposal-year-help proposal-year-error"
+                      required
+                    />
+                    <p id="proposal-year-help" class="form-text mb-0">
+                      El año no puede ser posterior al actual.
+                    </p>
+                    <div
+                      id="proposal-year-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <label for="proposal-pages" class="form-label">
+                      Cantidad de páginas
+                    </label>
+                    <input
+                      id="proposal-pages"
+                      name="pageCount"
+                      class="form-control"
+                      type="number"
+                      min="1"
+                      step="1"
+                      aria-describedby="proposal-pages-error"
+                      required
+                    />
+                    <div
+                      id="proposal-pages-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <label for="proposal-genre" class="form-label">
+                      Género
+                    </label>
+                    <select
+                      id="proposal-genre"
+                      name="genre"
+                      class="form-select"
+                      aria-describedby="proposal-genre-error"
+                      required
+                    >
+                      <option value="" selected disabled>
+                        Selecciona un género
+                      </option>
+                      <option value="novel">Novela</option>
+                      <option value="short-story">Cuento</option>
+                      <option value="poetry">Poesía</option>
+                      <option value="essay">Ensayo</option>
+                      <option value="theater">Teatro</option>
+                      <option value="other">Otro</option>
+                    </select>
+                    <div
+                      id="proposal-genre-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <label for="proposal-email" class="form-label">
+                      Tu correo electrónico
+                    </label>
+                    <input
+                      id="proposal-email"
+                      name="email"
+                      class="form-control"
+                      type="email"
+                      maxlength="254"
+                      autocomplete="email"
+                      aria-describedby="proposal-email-error"
+                      required
+                    />
+                    <div
+                      id="proposal-email-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <label for="proposal-session-date" class="form-label">
+                      Fecha propuesta para la sesión
+                    </label>
+                    <input
+                      id="proposal-session-date"
+                      name="sessionDate"
+                      class="form-control"
+                      type="date"
+                      aria-describedby="proposal-session-date-help proposal-session-date-error"
+                      required
+                    />
+                    <p id="proposal-session-date-help" class="form-text mb-0">
+                      Elige hoy o una fecha posterior.
+                    </p>
+                    <div
+                      id="proposal-session-date-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="proposal-reason" class="form-label">
+                      ¿Por qué propones este libro?
+                    </label>
+                    <textarea
+                      id="proposal-reason"
+                      name="reason"
+                      class="form-control"
+                      rows="4"
+                      minlength="10"
+                      maxlength="1000"
+                      aria-describedby="proposal-reason-help proposal-reason-error"
+                      required
+                    ></textarea>
+                    <p id="proposal-reason-help" class="form-text mb-0">
+                      Escribe entre 10 y 1000 caracteres.
+                    </p>
+                    <div
+                      id="proposal-reason-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+
+                  <div class="col-12">
+                    <button
+                      id="proposal-submit"
+                      class="btn btn-primary"
+                      type="submit"
+                      disabled
+                    >
+                      Enviar propuesta
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </fieldset>
             </form>
 
             <div

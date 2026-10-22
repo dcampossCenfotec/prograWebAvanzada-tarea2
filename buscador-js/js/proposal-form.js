@@ -1,8 +1,11 @@
+import { submitProposal } from './api.js';
+
 const form = document.querySelector('#proposal-form');
 const submitButton = document.querySelector('#proposal-submit');
 const feedback = document.querySelector('#proposal-feedback');
 const yearInput = document.querySelector('#proposal-year');
 const sessionDateInput = document.querySelector('#proposal-session-date');
+const proposalFields = document.querySelector('#proposal-fields');
 
 const REQUIRED_MESSAGES = {
   title: 'Escribe el título del libro.',
@@ -16,6 +19,7 @@ const REQUIRED_MESSAGES = {
 };
 
 let validationAttempted = false;
+let isSubmitting = false;
 
 function getLocalDateString(date) {
   const year = date.getFullYear();
@@ -173,6 +177,28 @@ export function resetProposalValidation() {
   });
 }
 
+function collectProposalData() {
+  const data = new FormData(form);
+
+  return {
+    title: data.get('title').trim(),
+    authors: data.getAll('authors').map((author) => author.trim()),
+    publicationYear: Number(data.get('publicationYear')),
+    pageCount: Number(data.get('pageCount')),
+    genre: data.get('genre'),
+    email: data.get('email').trim(),
+    sessionDate: data.get('sessionDate'),
+    reason: data.get('reason').trim(),
+  };
+}
+
+function setProposalSubmitting(submitting) {
+  proposalFields.disabled = submitting;
+  form.setAttribute('aria-busy', String(submitting));
+
+  submitButton.textContent = submitting ? 'Enviando…' : 'Enviar propuesta';
+}
+
 export function initProposalForm() {
   form.noValidate = true;
   refreshDateLimits();
@@ -201,8 +227,13 @@ export function initProposalForm() {
     }
   });
 
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
+
     clearProposalFeedback();
 
     if (!validateProposalForm()) {
@@ -211,7 +242,40 @@ export function initProposalForm() {
       return;
     }
 
-    showProposalFeedback('Los datos de tu propuesta son válidos.', 'success');
+    // Recopila los valores antes de deshabilitar el fieldset.
+    // FormData omite los controles deshabilitados.
+    const proposal = collectProposalData();
+
+    isSubmitting = true;
+    setProposalSubmitting(true);
+    showProposalFeedback('Enviando tu propuesta…');
+
+    try {
+      await submitProposal(proposal);
+    } catch (error) {
+      const message =
+        error.name === 'AbortError'
+          ? 'El envío tardó demasiado. Conservamos tus datos para que puedas reintentarlo.'
+          : 'No pudimos confirmar el envío. Conservamos tus datos; revisa tu conexión e inténtalo nuevamente.';
+
+      showProposalFeedback(message, 'danger');
+      return;
+    } finally {
+      isSubmitting = false;
+      setProposalSubmitting(false);
+
+      if (document.activeElement === document.body) {
+        submitButton.focus({ preventScroll: true });
+      }
+    }
+
+    // El fieldset ya está habilitado cuando se ejecutan los listeners de reset.
+    form.reset();
+
+    showProposalFeedback(
+      'El servicio de prueba recibió tu propuesta. El registro es simulado y no se guarda permanentemente.',
+      'success',
+    );
   });
 
   form.addEventListener('reset', resetProposalValidation);
