@@ -5,15 +5,37 @@ export default function BookList({
   members,
   onStatusChange,
   onRemove,
-  emptyMessage = 'Todavía no hay libros en la colección del club.',
+  emptyTitle = 'La colección está vacía',
+  emptyMessage = 'Agrega tu primera lectura con el formulario superior.',
+  onResetFilters,
 }) {
   const membersById = new Map(members.map((member) => [member.id, member]));
 
   if (books.length === 0) {
     return (
-      <p className="alert alert-info mb-0" role="status">
-        {emptyMessage}
-      </p>
+      <section className="club-empty-state" aria-labelledby="book-empty-title">
+        <h3 id="book-empty-title" className="h5">
+          {emptyTitle}
+        </h3>
+
+        <p className="text-body-secondary mb-0" role="status">
+          {emptyMessage}
+        </p>
+
+        {onResetFilters ? (
+          <button
+            className="btn btn-outline-primary mt-3"
+            type="button"
+            onClick={onResetFilters}
+          >
+            Mostrar todos los libros
+          </button>
+        ) : (
+          <a className="btn btn-primary mt-3" href="#add-book-title">
+            Agregar un libro
+          </a>
+        )}
+      </section>
     );
   }
 

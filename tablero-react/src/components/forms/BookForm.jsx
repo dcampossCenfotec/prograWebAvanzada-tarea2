@@ -79,7 +79,7 @@ export default function BookForm({ members, onAddBook }) {
   return (
     <section className="card shadow-sm mb-4" aria-labelledby="add-book-title">
       <div className="card-body p-3 p-md-4">
-        <h2 id="add-book-title" className="h4">
+        <h2 id="add-book-title" className="h4" tabIndex={-1}>
           Agrega una lectura
         </h2>
 

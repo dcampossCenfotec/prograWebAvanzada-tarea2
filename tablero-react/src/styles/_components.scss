@@ -1,0 +1,89 @@
+@use '../../../buscador-js/scss/variables' as theme;
+
+:root {
+  --club-surface: #fff;
+  --club-border: #c7d3c9;
+  --club-focus-color: #{theme.$primary};
+  --club-radius: #{theme.$border-radius-lg};
+}
+
+.club-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+
+  :focus-visible {
+    outline: 0.1875rem solid var(--club-focus-color);
+    outline-offset: 0.1875rem;
+  }
+
+  .alert {
+    overflow-wrap: anywhere;
+  }
+}
+
+.club-main {
+  flex: 1;
+}
+
+.club-header__title {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.club-book-card {
+  min-width: 0;
+
+  &__title {
+    font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  &__authors {
+    overflow-wrap: anywhere;
+  }
+}
+
+.club-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  &__body {
+    padding: 0.75rem 0.5rem;
+  }
+
+  &__label {
+    font-size: clamp(0.8125rem, 2vw, 1rem);
+    overflow-wrap: anywhere;
+  }
+
+  &__count {
+    margin: 0;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  @media (min-width: 48rem) {
+    gap: 1rem;
+
+    &__body {
+      padding: 1rem;
+    }
+  }
+}
+
+.club-empty-state {
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+  text-align: center;
+  background-color: var(--club-surface);
+  border: 1px dashed var(--club-border);
+  border-radius: var(--club-radius);
+}

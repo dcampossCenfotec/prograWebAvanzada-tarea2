@@ -1,0 +1,15 @@
+@use '../../../buscador-js/scss/variables' as theme;
+
+$primary: theme.$primary;
+$secondary: theme.$secondary;
+
+$body-bg: theme.$body-bg;
+$body-color: theme.$body-color;
+
+$font-family-sans-serif: theme.$font-family-sans-serif;
+
+$border-radius: theme.$border-radius;
+$border-radius-sm: theme.$border-radius-sm;
+$border-radius-lg: theme.$border-radius-lg;
+
+@import 'bootstrap/scss/bootstrap';

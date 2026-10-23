@@ -22,17 +22,18 @@ export default function BookSummary({ counts }) {
         filtros activos.
       </p>
 
-      <ul className="row g-3 list-unstyled mb-0">
+      <ul className="club-summary">
         {READING_STATUSES.map((status) => (
-          <li key={status} className="col-12 col-sm-4">
-            <div className="card h-100">
-              <div className="card-body">
-                <h4 className="h6 text-body-secondary">{status}</h4>
-                <p className="h3 mb-0">
-                  <span className="visually-hidden">Cantidad de libros: </span>
-                  {counts[status] ?? 0}
-                </p>
-              </div>
+          <li key={status} className="card h-100">
+            <div className="club-summary__body">
+              <h4 className="club-summary__label text-body-secondary mb-2">
+                {status}
+              </h4>
+
+              <p className="club-summary__count">
+                <span className="visually-hidden">Cantidad de libros: </span>
+                {counts[status] ?? 0}
+              </p>
             </div>
           </li>
         ))}

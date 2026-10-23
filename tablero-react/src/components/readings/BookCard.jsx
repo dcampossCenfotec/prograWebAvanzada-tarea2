@@ -20,13 +20,16 @@ export default function BookCard({
   const statusClass = STATUS_CLASSES[book.status] ?? 'text-bg-secondary';
 
   return (
-    <article className="card h-100 shadow-sm" aria-labelledby={titleId}>
+    <article
+      className="card club-book-card h-100 shadow-sm"
+      aria-labelledby={titleId}
+    >
       <div className="card-body d-flex flex-column">
-        <h3 id={titleId} className="card-title h5 text-break">
+        <h3 id={titleId} className="card-title club-book-card__title">
           {book.title}
         </h3>
 
-        <p className="card-text text-body-secondary">
+        <p className="card-text club-book-card__authors text-body-secondary">
           {book.authors.join(', ') || 'Autor no disponible'}
         </p>
 
@@ -40,7 +43,7 @@ export default function BookCard({
           </span>
         </p>
 
-        <div className="d-flex flex-wrap gap-2 mt-auto">
+        <div className="d-grid gap-2 mt-auto">
           <button
             className="btn btn-outline-primary btn-sm"
             type="button"

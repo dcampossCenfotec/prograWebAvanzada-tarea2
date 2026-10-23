@@ -46,9 +46,12 @@ export default function ReadingBoard() {
   const bookCount = books.length;
   const bookLabel = bookCount === 1 ? 'libro registrado' : 'libros registrados';
 
+  const emptyTitle =
+    books.length === 0 ? 'La colección está vacía' : 'No hay coincidencias';
+
   const emptyMessage =
     books.length === 0
-      ? 'Todavía no hay libros en la colección del club.'
+      ? 'Agrega tu primera lectura con el formulario superior.'
       : 'Ningún libro coincide con los filtros seleccionados. Prueba con otros filtros.';
 
   function handleAddBook(draft) {
@@ -126,7 +129,9 @@ export default function ReadingBoard() {
           members={INITIAL_MEMBERS}
           onStatusChange={handleStatusChange}
           onRemove={handleRemove}
+          emptyTitle={emptyTitle}
           emptyMessage={emptyMessage}
+          onResetFilters={books.length > 0 ? handleResetFilters : undefined}
         />
       </section>
     </>
