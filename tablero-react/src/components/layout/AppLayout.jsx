@@ -28,7 +28,7 @@ export default function AppLayout({ children }) {
       <footer className="border-top py-3">
         <div className="container">
           <p className="small text-body-secondary mb-0">
-            Estantería Común · Lecturas compartidas.
+            Estantería Común · Lecturas compartidas | Tarea 2 | Daniel Campos Sánchez.
           </p>
         </div>
       </footer>
