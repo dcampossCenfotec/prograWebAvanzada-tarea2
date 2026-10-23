@@ -1,12 +1,18 @@
 import BookCard from './BookCard.jsx';
 
-export default function BookList({ books, members, onStatusChange, onRemove }) {
+export default function BookList({
+  books,
+  members,
+  onStatusChange,
+  onRemove,
+  emptyMessage = 'Todavía no hay libros en la colección del club.',
+}) {
   const membersById = new Map(members.map((member) => [member.id, member]));
 
   if (books.length === 0) {
     return (
       <p className="alert alert-info mb-0" role="status">
-        Todavía no hay libros en la colección del club.
+        {emptyMessage}
       </p>
     );
   }
