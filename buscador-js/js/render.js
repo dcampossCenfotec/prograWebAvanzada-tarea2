@@ -13,7 +13,7 @@ const bookDetailContent = document.querySelector('#book-detail-content');
 const searchBooksById = new Map();
 
 const FALLBACK_COVER = new URL(
-  '../../assets/book-placeholder.svg',
+  '../assets/book-placeholder.svg',
   import.meta.url,
 ).href;
 
